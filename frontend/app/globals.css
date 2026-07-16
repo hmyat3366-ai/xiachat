@@ -1,0 +1,138 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: #ffffff;
+  --color-foreground: #111111;
+  --color-muted: #f9f9fb;
+  --color-muted-foreground: #8a8f98;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #111111;
+  --color-border: #eaeaea;
+  --color-input: #eaeaea;
+  
+  /* Primary Accent: Sleek Dark / Contrast */
+  --color-primary: #111111;
+  --color-primary-foreground: #ffffff;
+  --color-accent: #006adc;
+  --color-accent-hover: #0058b8;
+  --color-accent-light: #e6f0fa;
+
+  /* Neutrals (Refined SaaS Grays) */
+  --color-gray-50: #fafafa;
+  --color-gray-100: #f4f4f5;
+  --color-gray-200: #eaeaea;
+  --color-gray-300: #d4d4d8;
+  --color-gray-400: #a1a1aa;
+  --color-gray-500: #8a8f98;
+  --color-gray-600: #52525b;
+  --color-gray-700: #3f3f46;
+  --color-gray-800: #27272a;
+  --color-gray-900: #111111;
+  
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), monospace;
+  
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+body {
+  background: var(--color-muted);
+  color: var(--color-foreground);
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Scrollbar for sleek UI */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-gray-300);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gray-400);
+}
+
+/* Selection color */
+::selection {
+  background-color: var(--color-accent-light);
+  color: var(--color-accent-hover);
+}
+
+/* Smooth transitions for interactive elements */
+a,
+button {
+  transition: all 0.15s ease-in-out;
+}
+
+/* Glassmorphism panel utility */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(234, 234, 234, 0.8);
+}
+
+/* Productivity app standard shadows */
+.shadow-pro {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03), 0 1px 3px -1px rgba(0, 0, 0, 0.02);
+}
+.shadow-pro-lg {
+  box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.04), 0 8px 16px -6px rgba(0, 0, 0, 0.02);
+}
+
+/* =========================================
+   Dashboard Dark Theme — Select Dropdowns
+   ========================================= */
+
+/* Force dark dropdown background on all dashboard selects */
+.dashboard-dark select,
+select.dark-select {
+  color-scheme: dark;
+  background-color: #18181B;
+  color: #FAFAFA;
+}
+
+/* Global: any select inside a dark bg element */
+[class*="bg-[#09090B]"] select,
+[class*="bg-[#18181B]"] select,
+[class*="bg-[rgba(255,255,255,0.03)]"] select {
+  color-scheme: dark;
+  background-color: #18181B !important;
+  color: #FAFAFA !important;
+}
+
+/* Select option dark styling */
+select option {
+  background-color: #18181B;
+  color: #FAFAFA;
+}
+
+/* Dashboard-wide: apply dark color-scheme to select */
+#__next select,
+main select {
+  color-scheme: dark;
+}
+
+/* Scrollbar dark for dashboard */
+.dashboard-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.1);
+}
+.dashboard-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.2);
+}
