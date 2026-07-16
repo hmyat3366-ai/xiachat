@@ -87,6 +87,10 @@ export default function InboxPage() {
       const wId = storedUser ? JSON.parse(storedUser).workspaces?.[0] : null;
       socketRef.current?.emit("join_workspace", wId);
     });
+    if (socketRef.current.connected) {
+      const wId = storedUser ? JSON.parse(storedUser).workspaces?.[0] : null;
+      socketRef.current?.emit("join_workspace", wId);
+    }
 
     socketRef.current.on("receive_message", (data) => {
       // 1. Update Messages if it's the active conversation
@@ -106,7 +110,14 @@ export default function InboxPage() {
         if (convExists) {
           const updatedList = prev.map(c => 
             c._id === data.conversationId 
-              ? { ...c, lastMessageAt: new Date().toISOString() } 
+              ? { 
+                  ...c, 
+                  lastMessageAt: new Date().toISOString(),
+                  lastMessage: data.text,
+                  unreadCount: (data.conversationId !== activeConversationIdRef.current && data.senderType === 'visitor') 
+                    ? (c.unreadCount || 0) + 1 
+                    : (c.unreadCount || 0)
+                } 
               : c
           );
           return updatedList.sort((a, b) => new Date(b.lastMessageAt).getTime() - new Date(a.lastMessageAt).getTime());
@@ -303,6 +314,7 @@ export default function InboxPage() {
           activeConversationId={activeConversationId} 
           setActiveConversationId={(id) => {
             setActiveConversationId(id);
+            setConversations(prev => prev.map(c => c._id === id ? { ...c, unreadCount: 0 } : c));
             setIsMobileChatOpen(true);
           }} 
         />

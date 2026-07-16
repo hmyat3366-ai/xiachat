@@ -160,8 +160,11 @@ export const ConversationList = ({ conversations, activeConversationId, setActiv
             </div>
             <div className="flex-1 min-w-0 pt-0.5">
               <div className="flex justify-between items-baseline mb-1">
-                <h3 className={`text-[13px] font-semibold truncate pr-2 ${activeConversationId === c._id ? 'text-[#FAFAFA]' : 'text-[#E4E4E7]'}`}>
+                <h3 className={`text-[13px] font-semibold truncate pr-2 flex items-center gap-2 ${activeConversationId === c._id ? 'text-[#FAFAFA]' : 'text-[#E4E4E7]'}`}>
                   {c.visitorId?.name || "Anonymous"}
+                  {c.unreadCount > 0 && activeConversationId !== c._id && (
+                    <span className="w-2 h-2 rounded-full bg-[#4F46E5] inline-block shadow-[0_0_8px_rgba(79,70,229,0.8)]" />
+                  )}
                 </h3>
                 <span className="text-[10px] font-semibold text-[#A1A1AA] shrink-0 uppercase tracking-wider">
                   {new Date(c.lastMessageAt || c.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}

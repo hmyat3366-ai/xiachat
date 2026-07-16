@@ -558,9 +558,13 @@
           });
           
           socket.on("connect", () => {
-            console.log("Widget connected to Socket Server!");
+            console.log("✅ Widget socket connected!");
             socket.emit("join_chat", { room: room });
           });
+          if (socket.connected) {
+            console.log("✅ Widget socket already connected!");
+            socket.emit("join_chat", { room: room });
+          }
 
           socket.on("receive_message", (msgData) => {
             if (msgData.conversationId === conversationId && msgData.senderType !== 'visitor') {
