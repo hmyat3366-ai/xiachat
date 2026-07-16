@@ -595,7 +595,7 @@
       showPreChatForm();
     }
 
-    const appendMessage = (text, type, dateStr) => {
+    function appendMessage(text, type, dateStr) {
       const bubbleContainer = document.createElement('div');
       bubbleContainer.className = "xia-bubble " + (type === 'visitor' ? 'xia-bubble-visitor' : 'xia-bubble-agent');
       
@@ -622,21 +622,39 @@
       hideTyping();
       msgArea.appendChild(bubbleContainer);
       msgArea.scrollTop = msgArea.scrollHeight;
-    };
+    }
 
-    const handleSend = () => {
+    function handleSend() {
       const text = input.value.trim();
-      if (!text || !socket) return;
+      if (!text) return;
       appendMessage(text, 'visitor', new Date());
+      input.value = "";
       
       showTyping(); // Simulate AI/Agent thinking immediately
       
-      socket.emit("send_message", {
+      const payload = {
         room: room, conversationId: conversationId, workspaceId: workspaceId,
         type: 'visitor', sender: visitorName || 'Visitor', text: text
-      });
-      input.value = "";
-    };
+      };
+
+      if (!socket || !socket.connected) {
+        let retryCount = 0;
+        const interval = setInterval(() => {
+          if (socket && socket.connected) {
+            socket.emit("send_message", payload);
+            clearInterval(interval);
+          }
+          retryCount++;
+          if (retryCount > 60) {
+            clearInterval(interval);
+            hideTyping();
+          } // give up after 60s
+        }, 1000);
+        return;
+      }
+      
+      socket.emit("send_message", payload);
+    }
 
     sendBtn.onclick = handleSend;
     input.onkeypress = (e) => { if (e.key === 'Enter') handleSend(); };
