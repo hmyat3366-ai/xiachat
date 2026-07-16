@@ -156,6 +156,12 @@ exports.initWidget = async (req, res) => {
       });
       await conversation.save();
       isNewConversation = true;
+
+      // Broadcast new conversation to agents in real-time
+      if (req.io) {
+        const fullConv = await Conversation.findById(conversation._id).populate('visitorId');
+        req.io.to(`workspace_${wId}`).emit('new_conversation', fullConv);
+      }
     }
 
     // Only increment monthly conversations for genuinely new ones

@@ -59,9 +59,13 @@ module.exports = (io) => {
           await newMessage.save();
 
           const conv = await Conversation.findById(data.conversationId).populate('visitorId');
-          await Conversation.findByIdAndUpdate(data.conversationId, { 
-            lastMessageAt: new Date() 
-          });
+          
+          let updateData = { lastMessageAt: new Date(), lastMessage: data.text };
+          if (data.type === 'visitor' || !data.type) {
+            updateData.$inc = { unreadCount: 1 };
+          }
+          
+          await Conversation.findByIdAndUpdate(data.conversationId, updateData);
 
           // OMUNICHANNEL: Forward operator message to respective external platforms
           if (data.type === 'operator' && conv) {

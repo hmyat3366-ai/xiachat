@@ -409,8 +409,13 @@
     let room = null;
     let socket = null;
     
-    let visitorName = window.XiaChatVisitorName || me.getAttribute('data-visitor-name') || localStorage.getItem('xia_chat_visitor_name') || '';
-    let visitorEmail = window.XiaChatVisitorEmail || me.getAttribute('data-visitor-email') || localStorage.getItem('xia_chat_visitor_email') || '';
+    let storedName = localStorage.getItem('xia_chat_visitor_name');
+    let storedEmail = localStorage.getItem('xia_chat_visitor_email');
+    if (storedName === "null" || storedName === "undefined") storedName = '';
+    if (storedEmail === "null" || storedEmail === "undefined") storedEmail = '';
+    
+    let visitorName = window.XiaChatVisitorName || me.getAttribute('data-visitor-name') || storedName || '';
+    let visitorEmail = window.XiaChatVisitorEmail || me.getAttribute('data-visitor-email') || storedEmail || '';
 
     const preChatForm = document.createElement('div');
     preChatForm.id = 'xia-prechat-form';
@@ -542,11 +547,11 @@
             }
           }
 
-          if (data.isReturning && data.messages && data.messages.length > 0) {
+          if (data.messages && data.messages.length > 0) {
             data.messages.forEach(m => {
               appendMessage(m.text, m.senderType === 'visitor' ? 'visitor' : 'agent', m.createdAt);
             });
-          } else if (!data.isReturning) {
+          } else {
             if (data.config && data.config.welcomeMsg) {
               appendMessage(data.config.welcomeMsg, 'agent', new Date());
             }

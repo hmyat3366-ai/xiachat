@@ -138,6 +138,13 @@ export default function InboxPage() {
       });
     });
 
+    socketRef.current.on("new_conversation", (data) => {
+      setConversations(prev => {
+        if (prev.find(c => c._id === data._id)) return prev;
+        return [data, ...prev];
+      });
+    });
+
     return () => {
       socketRef.current?.disconnect();
     };
