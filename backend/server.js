@@ -109,7 +109,7 @@ app.use('/api/auth', authLimiter, restrictOrigin, authRoutes);
 app.use('/api', cors({ origin: '*', methods: ['GET', 'POST'] }), chatLimiter, chatMessageGuard, chatRoutes);
 app.use('/api/workspaces', restrictOrigin, workspaceRoutes);
 app.use('/api/analytics', restrictOrigin, analyticsRoutes);
-app.use('/api/upload', restrictOrigin, uploadLimiter, uploadRoutes);
+app.use('/api/upload', uploadLimiter, uploadRoutes);
 app.use('/api/visitors', restrictOrigin, visitorsRoutes);
 app.use('/api/billing', restrictOrigin, billingRoutes);
 app.use('/api/knowledge', restrictOrigin, knowledgeRoutes);
